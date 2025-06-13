@@ -1,10 +1,10 @@
 package com.springintro.introtospring;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class HelloWorldController {
@@ -24,10 +24,19 @@ public class HelloWorldController {
 //        return "Hello " + name + "!";
 //    }
 
+    private final AtomicLong counter = new AtomicLong();
+
+    Random random = new Random();
+
+
     @GetMapping("/greeting")
     public Greeting sayGreeting(@RequestParam(defaultValue = "World") String name) {
-        //new greeting object, give it id of 1 and build content string like before
-        return new Greeting(1L, "Hello " + name + "!");
+        //new greeting object, give it incremented id and build content string like before
+
+        long newId = counter.incrementAndGet();
+        long randomId = (long) ((long) Math.abs(random.nextLong()) % 1e6);
+
+        return new Greeting(newId, randomId,"Hello " + name + "!");
 
 
     }
